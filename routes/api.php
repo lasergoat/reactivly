@@ -14,9 +14,11 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function (Request $request) {
-    $slidesUrl = $request->get('url');
+    // broadcast an event
+    event(new App\Events\BeginSlides(
+      $request->get('url'),
+      $request->get('name')
+    ));
 
-    // this fires the event
-    event(new App\Events\BeginSlides($slidesUrl));
     return json_encode(true);
 });

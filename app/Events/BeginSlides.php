@@ -22,10 +22,11 @@ class BeginSlides implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($slidesUrl)
+    public function __construct($slidesUrl, $name)
     {
         $this->data = array(
-            'url'=> $slidesUrl
+            'url'=> $slidesUrl,
+            'name'=> $name,
         );
     }
 
