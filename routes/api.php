@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', function (Request $request) {
+    $slidesUrl = $request->get('url');
+
+    // this fires the event
+    event(new App\Events\BeginSlides($slidesUrl));
+    return json_encode(true);
 });
