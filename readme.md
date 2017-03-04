@@ -1,20 +1,35 @@
 
-Reactiv.ly
-======
+![reactivly-logo](https://cloud.githubusercontent.com/assets/15964/23580177/75dfe62e-00ca-11e7-96a2-db29c87529ab.png)
 
 Daniel Walker
 
+------
 
 ####Goal:
 
 To build a chrome extension which allows a presenter to revieve audience interactions and engagements during the presentation. Will also serve as an easy way for users to request the slides.
 
+-----
 
-####Overview:
+Running Locally:
+=====
+
+**Run `npm start`**
+
+- This will start redis and a socket server
+
+
+-----
+
+Overview:
+=====
 
 The chrome extension will receive data from the API (this PHP project) and display them on the screen. Meanwhile, another React project (a SPA) will be the frontend for the presentation audience to open on their mobile devices. A link will appear on the presentation and upon visiting it audience members will see a screen with emojis and clicking one will make it flow across the screen of the presentation itself. They will also be able to get a link to the slides and ask questions (stretch goal).
 
-###Detail Overview:
+-----
+
+Detail Overview:
+=====
 
 **Chrome Extension:**
 
@@ -55,3 +70,12 @@ _The php will use these socket.io events:_
 - I plan to make a slide show if I have time to document this stuff
 - This will also dog food my app during my presentation
 
+----
+
+Requirements
+====
+
+- homebrew
+- `brew install redis`
+- node js
+- composer
