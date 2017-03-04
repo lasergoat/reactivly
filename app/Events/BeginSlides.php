@@ -25,7 +25,7 @@ class BeginSlides implements ShouldBroadcast
     public function __construct()
     {
         $this->data = array(
-            'power'=> '10'
+            'url'=> 'http://slides.com'
         );
     }
 
@@ -36,6 +36,6 @@ class BeginSlides implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('test-channel');
+        return new Channel('R');
     }
 }

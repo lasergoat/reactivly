@@ -6,7 +6,7 @@ const redis = new Redis();
 
 const port = process.env.PORT || 3001;
 
-redis.subscribe('test-channel', function(err, count) {
+redis.subscribe('R', function(err, count) {
 });
 
 // when the PHP api sends an event, 
@@ -22,7 +22,19 @@ redis.on('message', function(channel, message) {
   // event being pushed to socket will look like:
   // R:App\\Events\\BeginSlides with the message.data as payload
   const event = channel + ':' + message.event;
+  console.log('Emitting to Socket: ', event);
   io.emit(event, message.data);
+});
+
+// Here's the part to listen for things from the audience:
+io.on('connection', (client) => {  
+  console.log('Socket connected...');
+
+  client.on('emoji', (data) => {
+     // client.emit('broad', data);
+     // client.broadcast.emit('broad',data);
+    console.log('Event from Audience Member:', data);
+  });
 });
 
 http.listen(port, function(){
