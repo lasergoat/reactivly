@@ -1,9 +1,10 @@
 {
   "private": true,
   "scripts": {
-    "start": "npm-run-all server:redis server:socket --parallel",
+    "start": "npm-run-all --parallel serve:dev server:redis server:socket",
     "server:socket": "node socket-server.js",
-    "server:redis": "redis-server --port 3001",
+    "server:redis": "redis-server",
+    "serve:dev": "php artisan serve",
     "dev": "cross-env NODE_ENV=development webpack --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "watch": "cross-env NODE_ENV=development webpack --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "hot": "cross-env NODE_ENV=development webpack-dev-server --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
