@@ -4,7 +4,7 @@ const io = require('socket.io')(http);
 const Redis = require('ioredis');
 const redis = new Redis();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 redis.subscribe('test-channel', function(err, count) {
 });
