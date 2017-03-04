@@ -59,6 +59,8 @@ _The php will use these socket.io events:_
 
 **React SPA**
 
+NOTE: _[link to repo here](https://github.com/lasergoat/reactivlyspa)_
+
 - This is the mobile responsive page audience members will visit during a presentation
 - Will show the slides url with a copy option
 - Will show a grid of emojis
