@@ -6,6 +6,10 @@ const redis = new Redis();
 
 const port = process.env.PORT || 3001;
 
+var state = {
+  lastPresenterEvent: {}
+} 
+
 redis.subscribe('R', function(err, count) {
 });
 
@@ -23,12 +27,30 @@ redis.on('message', function(channel, message) {
   // R:App\\Events\\BeginSlides with the message.data as payload
   const event = channel + ':' + message.event;
   console.log('Emitting to Socket: ', event);
+
+  state = {
+    lastPresenterEvent: {
+      event: event,
+      data: message.data
+    }
+  };
+
   io.emit(event, message.data);
 });
 
 // Here's the part to listen for things from the audience:
 io.on('connection', (client) => {  
   console.log('Socket connected...');
+
+  // when a user first connects, give them the last event from the presenter also
+  // (if there is one)
+  if (state.lastPresenterEvent) {
+    console.log('pushing to new person', state);
+    io.emit(
+      state.lastPresenterEvent.event,
+      state.lastPresenterEvent.data
+    );
+  }
 
   client.on('emoji', (data) => {
      // client.emit('broad', data);
