@@ -1,40 +1,45 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Reactiv.ly
+======
 
-## About Laravel
+Daniel Walker
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+####Goal:
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+To build a chrome extension which allows a presenter to revieve audience interactions and engagements during the presentation. Will also serve as an easy way for users to request the slides.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+####Overview:
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+The chrome extension will receive data from the API (this PHP project) and display them on the screen. Meanwhile, another React project (a SPA) will be the frontend for the presentation audience to open on their mobile devices. A link will appear on the presentation and upon visiting it audience members will see a screen with emojis and clicking one will make it flow across the screen of the presentation itself. They will also be able to get a link to the slides and ask questions (stretch goal).
 
-## Contributing
+###Detail Overview:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+**Chrome Extension:**
 
-## Security Vulnerabilities
+- runs in background
+- places url notification on screen for viewers
+- modifies page css with emjois and questions
+- listens for responses from PHP api socket
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+**PHP Api**
 
-## License
+- Recieves "interactions" from audience members
+- Pushes to a socket in chrome extension
+- Uses MySQL or Redis for data store (not sure yet)
+- stores slides url for distribution
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+**React SPA**
+
+- This is the mobile responsive page audience members will visit during a presentation
+- Will show the slides url with a copy option
+- Will show a grid of emojis
+    - stretch goal: emjois, if held will change size when the show up on the presenter screen - as if they were being "charged up"
+- Will allow rapid tapping for spewing icons to presenter
+
+**Slides**
+
+- I plan to make a slide show if I have time to document this stuff
+- This will also dog food my app during my presentation
+
