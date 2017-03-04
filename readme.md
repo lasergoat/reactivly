@@ -27,8 +27,20 @@ The chrome extension will receive data from the API (this PHP project) and displ
 
 - Recieves "interactions" from audience members
 - Pushes to a socket in chrome extension
-- Uses MySQL or Redis for data store (not sure yet)
+- Uses MySQL for data store (might not be needed)
 - stores slides url for distribution
+- in order to push events to the socket, will also need a node script to listen for Redis pushes
+
+_The php will use these socket.io events:_
+
+- `Interact` (pushed from spa)
+    - emoji type
+    - "intensity"
+- `Question` (pushed from spa)
+    - includes question text
+    - stretch goal: include audience member name
+- `BeginSlides` _new presentation_ (pushed from api)
+    - includes slides url
 
 **React SPA**
 
