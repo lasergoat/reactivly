@@ -53,9 +53,19 @@ io.on('connection', (client) => {
   }
 
   client.on('emoji', (data) => {
-     // client.emit('broad', data);
-     // client.broadcast.emit('broad',data);
+    // client.emit('broad', data);
+    // client.broadcast.emit('broad',data);
     console.log('Event from Audience Member:', data);
+
+    io.emit('R:App\\Events\\Interaction', data);
+  });
+
+  client.on('question', (data) => {
+    // client.emit('broad', data);
+    // client.broadcast.emit('broad',data);
+    console.log('Question from Audience Member:', data);
+
+    io.emit('R:App\\Events\\Question', data);
   });
 });
 
