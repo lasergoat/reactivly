@@ -38,6 +38,8 @@ Goals vs Progress:
 - [ ] Frontend Allows Emoji Intensity
 - [x] Chrome Extension Shows Emojis
 - [x] Emojis Animate Across Screen
+- [ ] Slides done for my actual presentation
+- [ ] App Deployed to Prod Server for Use
 
 -----
 
