@@ -43,7 +43,12 @@ Goals vs Progress:
 - [ ] Email Recorded Data
 - [ ] Slides done for my actual presentation
 - [ ] App Deployed to Prod Server for Use
- 
+
+
+![screen shot 2017-03-04 at 9 44 05 pm](https://cloud.githubusercontent.com/assets/15964/23584093/9bc953c0-0124-11e7-931a-53fbbce1c212.png)
+
+![screen shot 2017-03-04 at 9 46 51 pm](https://cloud.githubusercontent.com/assets/15964/23584092/9bc75e8a-0124-11e7-8821-2800b0305769.png)
+
 -----
 
 Detail Overview:
