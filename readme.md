@@ -34,10 +34,13 @@ Goals vs Progress:
 - [x] Backend Records Presentation URL
 - [x] Frontend Allows Spamming Emojis
 - [x] Frontend Allows Copying Slide URL
-- [ ] Frontend Allows Asking Questions
+- [x] Frontend Allows Asking Questions
 - [ ] Frontend Allows Emoji Intensity
 - [x] Chrome Extension Shows Emojis
 - [x] Emojis Animate Across Screen
+- [x] Questions Animate Across Screen like a News Station
+- [ ] Record Data during presentation
+- [ ] Email Recorded Data
 - [ ] Slides done for my actual presentation
 - [ ] App Deployed to Prod Server for Use
 
