@@ -43,7 +43,7 @@ Goals vs Progress:
 - [ ] Email Recorded Data
 - [ ] Slides done for my actual presentation
 - [ ] App Deployed to Prod Server for Use
-
+ 
 -----
 
 Detail Overview:
