@@ -26,12 +26,27 @@ Overview:
 
 The chrome extension will receive data from the API (this PHP project) and display them on the screen. Meanwhile, another React project (a SPA) will be the frontend for the presentation audience to open on their mobile devices. A link will appear on the presentation and upon visiting it audience members will see a screen with emojis and clicking one will make it flow across the screen of the presentation itself. They will also be able to get a link to the slides and ask questions (stretch goal).
 
+
+Goals vs Progress:
+----
+
+- [ ] Backend Allows Multiple Instances
+- [x] Backend Records Presentation URL
+- [x] Frontend Allows Spamming Emojis
+- [x] Frontend Allows Copying Slide URL
+- [ ] Frontend Allows Asking Questions
+- [ ] Frontend Allows Emoji Intensity
+- [x] Chrome Extension Shows Emojis
+- [x] Emojis Animate Across Screen
+
 -----
 
 Detail Overview:
 =====
 
 **Chrome Extension:**
+
+NOTE: _[link to repo here](https://github.com/lasergoat/reactivlyext)_
 
 - runs in background
 - places url notification on screen for viewers
