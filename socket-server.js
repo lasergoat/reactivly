@@ -21,24 +21,28 @@ redis.on('message', function(channel, message) {
   // {"event":"App\\Events\\BeginSlides","data":{"data":{"power":"10"},"socket":null},"socket":null}
 
   console.log('Message Recieved: ', message);
-  message = JSON.parse(message);
+  const messageData = JSON.parse(message);
 
   // event being pushed to socket will look like:
   // R:App\\Events\\BeginSlides with the message.data as payload
-  const event = channel + ':' + message.event;
-  console.log('Emitting to Socket: ', event);
+  const event = channel + ':' + messageData.event;
+  console.log('Emitting to Socket: ', event, messageData.data);
 
-  state = {
-    lastPresenterEvent: {
-      event: event,
-      data: message.data
-    }
-  };
+  // store the slides name for late joiners
+  if (event === 'App\\Events\\BeginSlides') {
+    state = {
+      lastPresenterEvent: {
+        event: event,
+        data: messageData.data
+      }
+    };
+  }
 
-  io.emit(event, message.data);
+  io.emit(event, messageData.data);
 });
 
-// Here's the part to listen for things from the audience:
+// when an audience member joins give them the slide url
+// if it exists
 io.on('connection', (client) => {  
   console.log('Socket connected...');
 
@@ -51,25 +55,8 @@ io.on('connection', (client) => {
       state.lastPresenterEvent.data
     );
   }
-
-  client.on('emoji', (data) => {
-    // client.emit('broad', data);
-    // client.broadcast.emit('broad',data);
-    console.log('Event from Audience Member:', data);
-
-    io.emit('R:App\\Events\\Interaction', data);
-  });
-
-  client.on('question', (data) => {
-    // client.emit('broad', data);
-    // client.broadcast.emit('broad',data);
-    console.log('Question from Audience Member:', data);
-
-    io.emit('R:App\\Events\\Question', data);
-  });
 });
 
 http.listen(port, function(){
-    console.log('Listening on Port '+ port);
+  console.log('Listening on Port '+ port);
 });
-

@@ -10,18 +10,23 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class Interact
+class Interact implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
+    public $data;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($intensity = 1, $emoji = ':)')
     {
-        //
+        $this->data = array(
+            'intensity'=> $intensity,
+            'emoji'=> $emoji,
+        );
     }
 
     /**
@@ -31,6 +36,6 @@ class Interact
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('channel-name');
+        return new Channel('R');
     }
 }

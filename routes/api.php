@@ -13,10 +13,30 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function (Request $request) {
+Route::get('/begin', function (Request $request) {
     // broadcast an event
     event(new App\Events\BeginSlides(
       $request->get('url'),
+      $request->get('name')
+    ));
+
+    return json_encode(true);
+});
+
+Route::get('/react', function (Request $request) {
+    // broadcast an event
+    event(new App\Events\Interact(
+      $request->get('intensity'),
+      $request->get('emoji')
+    ));
+
+    return json_encode(true);
+});
+
+Route::get('/ask', function (Request $request) {
+    // broadcast an event
+    event(new App\Events\Question(
+      $request->get('question'),
       $request->get('name')
     ));
 
