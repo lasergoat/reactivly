@@ -29,6 +29,18 @@ Route::get('/react', function (Request $request) {
       $request->get('intensity'),
       $request->get('emoji')
     ));
+    event(new App\Events\Interact(
+      $request->get('intensity'),
+      $request->get('emoji')
+    ));
+    event(new App\Events\Interact(
+      $request->get('intensity'),
+      $request->get('emoji')
+    ));
+    event(new App\Events\Interact(
+      $request->get('intensity'),
+      $request->get('emoji')
+    ));
 
     return json_encode(true);
 });

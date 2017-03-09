@@ -1,64 +1,63 @@
-const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http);
+
+import Hapi from 'hapi';
+import codes from './util/names-util';
+import sample from 'lodash/sample';
 
 const port = process.env.PORT || 3001;
-const redisUrl = process.env.REDIS_URL || '';
 
-const Redis = require('ioredis');
-const redis = new Redis(redisUrl);
+// Create a server with a host and port
+const server = new Hapi.Server();
+
+server.connection({ 
+  host: 'localhost', 
+  port: port 
+});
+
+// Add the route
+server.route({
+  method: 'GET',
+  path:'/hello', 
+  handler: (request, reply) => {
+
+    return reply(sample(codes));
+  }
+});
+
+// Start the server
+server.start((err) => {
+  if (err) {
+      throw err;
+  }
+  console.log('Server running at:', server.info.uri);
+});
 
 var state = {
   lastPresenterEvent: {}
-} 
+}
 
-redis.subscribe('R', function(err, count) {
-});
+// when a presenter starts slides, 
+// send to that audience and store the data
 
-// when the PHP api sends an event, 
-// push it to socket.io
-redis.on('message', function(channel, message) {
+// when an audience member comes in, find their presenter
+// send them the slide data
 
-  // message will look like:
-  // {"event":"App\\Events\\BeginSlides","data":{"data":{"power":"10"},"socket":null},"socket":null}
-
-  console.log('Message Recieved: ', message);
-  const messageData = JSON.parse(message);
-
-  // event being pushed to socket will look like:
-  // R:App\\Events\\BeginSlides with the message.data as payload
-  const event = channel + ':' + messageData.event;
-  console.log('Emitting to Socket: ', event, messageData.data);
-
-  // store the slides name for late joiners
-  if (event === 'App\\Events\\BeginSlides') {
-    state = {
-      lastPresenterEvent: {
-        event: event,
-        data: messageData.data
-      }
-    };
-  }
-
-  io.emit(event, messageData.data);
-});
+// when an audience asks question or reacts, send to that presenter
 
 // when an audience member joins give them the slide url
 // if it exists
-io.on('connection', (client) => {  
-  console.log('Socket connected...');
+// io.on('connection', (client) => {  
 
   // when a user first connects, give them the last event from the presenter also
   // (if there is one)
-  if (state.lastPresenterEvent) {
-    console.log('pushing to new person', state);
-    io.emit(
-      state.lastPresenterEvent.event,
-      state.lastPresenterEvent.data
-    );
-  }
-});
+//   if (state.lastPresenterEvent) {
+//     console.log('pushing to new person', state);
+//     io.emit(
+//       state.lastPresenterEvent.event,
+//       state.lastPresenterEvent.data
+//     );
+//   }
+// });
 
-http.listen(port, function(){
-  console.log('Listening on Port '+ port);
-});
+// http.listen(port, function(){
+//   console.log('Listening on Port '+ port);
+// });
