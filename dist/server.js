@@ -1,39 +1,50 @@
+'use strict';
 
-import Hapi from 'hapi';
-import codes from './util/names-util';
-import sample from 'lodash/sample';
+var _hapi = require('hapi');
 
-const port = process.env.PORT || 3001;
+var _hapi2 = _interopRequireDefault(_hapi);
+
+var _namesUtil = require('./util/names-util');
+
+var _namesUtil2 = _interopRequireDefault(_namesUtil);
+
+var _sample = require('lodash/sample');
+
+var _sample2 = _interopRequireDefault(_sample);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var port = process.env.PORT || 3001;
 
 // Create a server with a host and port
-const server = new Hapi.Server();
+var server = new _hapi2.default.Server();
 
-server.connection({ 
-  host: 'localhost', 
-  port: port 
+server.connection({
+  host: 'localhost',
+  port: port
 });
 
 // Add the route
 server.route({
   method: 'GET',
-  path:'/hello', 
-  handler: (request, reply) => {
+  path: '/hello',
+  handler: function handler(request, reply) {
 
-    return reply(sample(codes));
+    return reply((0, _sample2.default)(_namesUtil2.default));
   }
 });
 
 // Start the server
-server.start((err) => {
+server.start(function (err) {
   if (err) {
-      throw err;
+    throw err;
   }
   console.log('Server running at:', server.info.uri);
 });
 
 var state = {
   lastPresenterEvent: {}
-}
+};
 
 // when a presenter starts slides, 
 // send to that audience and store the data
@@ -47,8 +58,8 @@ var state = {
 // if it exists
 // io.on('connection', (client) => {  
 
-  // when a user first connects, give them the last event from the presenter also
-  // (if there is one)
+// when a user first connects, give them the last event from the presenter also
+// (if there is one)
 //   if (state.lastPresenterEvent) {
 //     console.log('pushing to new person', state);
 //     io.emit(
