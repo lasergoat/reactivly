@@ -3,6 +3,7 @@ import Hapi from 'hapi';
 import codes from './util/names-util';
 import sample from 'lodash/sample';
 
+
 const port = process.env.PORT || 3001;
 
 // Create a server with a host and port
@@ -12,6 +13,7 @@ server.connection({
   host: 'localhost', 
   port: port 
 });
+
 
 // Add the route
 server.route({
@@ -29,12 +31,25 @@ server.start((err) => {
       throw err;
   }
   console.log('Server running at:', server.info.uri);
+
+  const socket = require('socket.io')(server.listener);
+
+  socket.on('connection', (sock) => {
+    // once a client has connected, we expect to get a ping from them saying what room they want to join
+    sock.on('room', function(room) {
+      console.log('someone joining '+ room);
+      sock.join(room);
+    });
+    sock.on('react', (data) => {
+      console.log(data);
+    });
+  });
+
 });
 
 var state = {
   lastPresenterEvent: {}
 }
-
 // when a presenter starts slides, 
 // send to that audience and store the data
 

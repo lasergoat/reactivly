@@ -2,7 +2,7 @@
   "private": true,
   "scripts": {
     "start2": "npm-run-all --parallel serve:dev server:redis server:socket",
-    "start": "babel-node ./socket-server.js",
+    "start": "babel-node ./server.js",
     "server:socket": "node ./socket-server.js",
     "serve": "node ./dist/server.js",
     "server:redis": "redis-server",
