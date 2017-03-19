@@ -1,6 +1,8 @@
 
 ![reactivly-logo](https://cloud.githubusercontent.com/assets/15964/23580177/75dfe62e-00ca-11e7-96a2-db29c87529ab.png)
 
+[logo](https://logomakr.com/5VS1b4)
+
 Daniel Walker
 
 ------
