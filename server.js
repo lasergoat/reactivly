@@ -1,50 +1,88 @@
 
-import Hapi from 'hapi';
+const express = require('express');  
+const app = express();  
+const server = require('http').createServer(app);  
+const socket = require('socket.io')(server);
+
+import get from 'lodash/get';
 import codes from './util/names-util';
 import sample from 'lodash/sample';
 
-
 const port = process.env.PORT || 3001;
 
+const rooms = {};
+
 // Create a server with a host and port
-const server = new Hapi.Server();
+// const server = new Hapi.Server();
 
-server.connection({ 
-  host: 'localhost', 
-  port: port 
+// server.connection({ 
+//   host: 'localhost', 
+//   port: port 
+// });
+
+server.listen(port, function(){
+  console.log('Listening on Port '+ port);
 });
-
 
 // Add the route
-server.route({
-  method: 'GET',
-  path:'/', 
-  handler: (request, reply) => {
+app.get('/', function (req, res) {
+  res.send(sample(codes))
+})
 
-    return reply(sample(codes));
-  }
-});
+socket.on('connection', (sock) => {
+  let thisSocketRoom = null;
 
-// Start the server
-server.start((err) => {
-  if (err) {
-      throw err;
-  }
-  console.log('Server running at:', server.info.uri);
-
-  const socket = require('socket.io')(server.listener);
-
-  socket.on('connection', (sock) => {
-    // once a client has connected, we expect to get a ping from them saying what room they want to join
-    sock.on('room', function(room) {
-      console.log('someone joining '+ room);
-      sock.join(room);
-    });
-    sock.on('react', (data) => {
-      console.log(data);
-    });
+  // once a client has connected, we expect to get a ping from them saying what room they want to join
+  sock.on('presenter', ({ room, url }) => {
+    rooms[room] = {
+      url,
+      presenter: sock
+    };
+    console.log('presenter found', { room, url });
+    console.log(rooms);
   });
 
+  sock.on('room', ({ room, name }) => {
+    console.log('someone joined '+ room);
+
+    const currentRoom = get(rooms, room);
+    console.log('found room: '+ room);
+
+    if (currentRoom) {
+      thisSocketRoom = currentRoom;
+      sock.join(room);
+      sock.emit('slides', {
+        url: currentRoom.url
+      });
+    } else {
+      sock.emit('noslides', {
+        error: 'No presentation with this code'
+      });
+    }
+
+    // to send to everyone in room
+    // sock.broadcast.to(room).emit('react', {emoji: 'poop'});
+  });
+
+  sock.on('react', ({ emoji, intensity }) => {
+    console.log(thisSocketRoom, emoji, intensity);
+    if (thisSocketRoom) {
+      thisSocketRoom.presenter.emit(
+        'react',
+        { emoji, intensity }
+      );
+    }
+  });
+
+  sock.on('question', ({ question, name }) => {
+    console.log(thisSocketRoom, question, name);
+    if (thisSocketRoom) {
+      thisSocketRoom.presenter.emit(
+        'question',
+        { question, name }
+      );
+    }
+  });
 });
 
 var state = {
