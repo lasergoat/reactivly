@@ -1,8 +1,11 @@
 
 const express = require('express');  
+const cors = require('cors');
 const app = express();  
 const server = require('http').createServer(app);  
 const socket = require('socket.io')(server);
+
+app.use(cors());
 
 import get from 'lodash/get';
 import codes from './util/names-util';
@@ -25,7 +28,7 @@ server.listen(port, function(){
 });
 
 // Add the route
-app.get('/', function (req, res) {
+app.get('/room', function (req, res) {
   res.send(sample(codes))
 })
 
@@ -33,20 +36,35 @@ socket.on('connection', (sock) => {
   let thisSocketRoom = null;
 
   // once a client has connected, we expect to get a ping from them saying what room they want to join
-  sock.on('presenter', ({ room, url }) => {
+  sock.on('presenter', ({ url }) => {
+    const room = sample(codes);
+
     rooms[room] = {
       url,
       presenter: sock
     };
+    sock.emit('assignroom', { room });
+
     console.log('presenter found', { room, url });
-    console.log(rooms);
+  });
+
+  sock.on('endpresentation', ({ room }) => {
+    const currentRoom = get(rooms, room);
+
+    if (currentRoom) {
+      delete rooms[room];
+    }
+
+    sock.broadcast.to(room).emit('noslides', {
+      error: 'No presentation with this code'
+    });
+
   });
 
   sock.on('room', ({ room, name }) => {
     console.log('someone joined '+ room);
 
     const currentRoom = get(rooms, room);
-    console.log('found room: '+ room);
 
     if (currentRoom) {
       thisSocketRoom = currentRoom;
@@ -65,7 +83,7 @@ socket.on('connection', (sock) => {
   });
 
   sock.on('react', ({ emoji, intensity }) => {
-    console.log(thisSocketRoom, emoji, intensity);
+    // console.log(thisSocketRoom, emoji, intensity);
     if (thisSocketRoom) {
       thisSocketRoom.presenter.emit(
         'react',
@@ -75,7 +93,7 @@ socket.on('connection', (sock) => {
   });
 
   sock.on('question', ({ question, name }) => {
-    console.log(thisSocketRoom, question, name);
+    // console.log(thisSocketRoom, question, name);
     if (thisSocketRoom) {
       thisSocketRoom.presenter.emit(
         'question',
