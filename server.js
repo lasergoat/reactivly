@@ -32,6 +32,10 @@ app.get('/room', function (req, res) {
   res.send(sample(codes))
 })
 
+// todo: 
+// need a system to delete rooms once they haven't been used in a while
+// also, need to only assign rooms which aren't being used
+
 socket.on('connection', (sock) => {
   let thisSocketRoom = null;
 
